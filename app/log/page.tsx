@@ -158,23 +158,58 @@ export default function Logger() {
     setUserId(storedId);
   }, []);
 
-  const logMood = async (score: number) => {
-    if (!userId) return;
-    setStatus('saving');
+//   const logMood = async (score: number) => {
+//     if (!userId) return;
+//     setStatus('saving');
 
-    const { error } = await supabase
-      .from('mood_logs')
-      .insert({ user_id: userId, mood_score: score });
+//     const { error } = await supabase
+//       .from('mood_logs')
+//       .insert({ user_id: userId, mood_score: score });
 
-    if (error) {
-      console.error(error);
-      alert('Error saving mood. Try again.');
-      setStatus('idle');
-    } else {
-      setStatus('done');
-      setTimeout(() => setStatus('idle'), 1500); // Reset after 1.5s so they can see the buttons again if needed
-    }
-  };
+//     if (error) {
+//       console.error(error);
+//       alert('Error saving mood. Try again.');
+//       setStatus('idle');
+//     } else {
+//       setStatus('done');
+//       setTimeout(() => setStatus('idle'), 1500); // Reset after 1.5s so they can see the buttons again if needed
+//     }
+//   };
+
+// Inside app/log/page.tsx
+
+const logMood = async (score: number) => {
+  if (!userId) return;
+  setStatus('saving');
+
+  // 1. Get the date from YOUR device (fixes the 1 AM bug)
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const localDate = `${year}-${month}-${day}`; // Format: "2024-01-11"
+
+  // 2. Use upsert() instead of insert()
+  const { error } = await supabase
+    .from('mood_logs')
+    .upsert(
+      { 
+        user_id: userId, 
+        mood_score: score, 
+        log_date: localDate // Explicitly overriding the server default
+      },
+      { onConflict: 'user_id, log_date' } // This tells DB which columns determine uniqueness
+    );
+
+  if (error) {
+    console.error(error);
+    alert('Error saving mood. Try again.');
+    setStatus('idle');
+  } else {
+    setStatus('done');
+    setTimeout(() => setStatus('idle'), 1500);
+  }
+};
 
   const copyUserId = () => {
     if (userId) {
