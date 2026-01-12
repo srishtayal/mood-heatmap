@@ -339,7 +339,7 @@ export default function LandingPage() {
           <div className="bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 md:p-8 text-left shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-8 duration-300 scrollbar-hide">
             
             {/* --- Modal Header --- */}
-            <div className="flex justify-between items-center mb-8 sticky top-0 bg-neutral-900 z-10 py-2 border-b border-neutral-800">
+            <div className="flex justify-between items-center mb-8 top-0 bg-neutral-900 z-10 py-2 border-b border-neutral-800">
               <div className="flex items-center gap-3">
                 {/* Back Button */}
                 {platform && (
