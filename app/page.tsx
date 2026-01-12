@@ -1,102 +1,12 @@
-// 'use client';
-
-// import { useState } from 'react';
-// import Link from 'next/link';
-
-// export default function LandingPage() {
-//   const [showModal, setShowModal] = useState(false);
-
-//   return (
-//     <main className="min-h-screen w-full bg-black text-white flex flex-col items-center justify-center p-6 text-center relative font-sans">
-      
-//       {/* --- Main Content --- */}
-//       <div className="max-w-md space-y-8 animate-in fade-in duration-700">
-//         <h1 className="text-6xl font-bold tracking-tighter">See your year, at a glance.</h1>
-//         <p className="text-xl text-neutral-400">
-//           Log one mood a day. <br />
-//           Turn your daily mood into a living wallpaper. 
-//         </p>
-
-//         <div className="flex flex-col gap-4 pt-4">
-//           <button
-//             onClick={() => setShowModal(true)}
-//             className="bg-white text-black text-lg font-semibold py-4 px-8 rounded-full hover:scale-105 transition-transform"
-//           >
-//             Install / Get Started
-//           </button>
-          
-//         </div>
-//       </div>
-
-//       {/* --- Footer / Grid Decoration --- */}
-//       <div className="absolute bottom-10 opacity-20 flex gap-2">
-//          {/* Simple visual cue of the grid */}
-//          <div className="w-4 h-4 rounded-full bg-green-500"></div>
-//          <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
-//          <div className="w-4 h-4 rounded-full bg-red-500"></div>
-//          <div className="w-4 h-4 rounded-full bg-neutral-800"></div>
-//       </div>
-
-
-//       {/* --- Install Modal --- */}
-//       {showModal && (
-//         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-//           <div className="bg-neutral-900 border border-neutral-800 w-full max-w-lg rounded-2xl p-6 space-y-6 text-left shadow-2xl animate-in slide-in-from-bottom-10">
-            
-//             <div className="flex justify-between items-center border-b border-neutral-800 pb-4">
-//               <h2 className="text-2xl font-bold">Setup Guide</h2>
-//               <button onClick={() => setShowModal(false)} className="text-neutral-500 hover:text-white text-2xl">&times;</button>
-//             </div>
-
-//             <div className="space-y-6">
-//               {/* Step 1: PWA Install */}
-//               <div className="space-y-2">
-//                 <h3 className="text-lg font-semibold text-green-400">1. Install the App</h3>
-//                 <p className="text-neutral-300">
-//                   Tap the <span className="font-bold">Share</span> button (Safari) or <span className="font-bold">Menu</span> (Chrome) and select <span className="font-bold bg-neutral-800 px-2 py-1 rounded">Add to Home Screen</span>.
-//                 </p>
-//                 <p className="text-xs text-neutral-500">This adds the Mood Logger to your phone.</p>
-//               </div>
-
-//               {/* Step 2: Shortcut Setup */}
-//               <div className="space-y-2">
-//                 <h3 className="text-lg font-semibold text-orange-400">2. Setup Wallpaper</h3>
-//                 <p className="text-neutral-300">
-//                   You need an iOS Shortcut to update your wallpaper automatically.
-//                 </p>
-//                 <a 
-//                   href="#" // TODO: Add your actual iCloud Shortcut Link here
-//                   className="inline-block mt-2 text-blue-400 hover:underline"
-//                 >
-//                   👉 Click here to download the Shortcut
-//                 </a>
-//                 <p className="text-xs text-neutral-500">
-//                   Configure the shortcut to run daily at midnight.
-//                 </p>
-//               </div>
-//             </div>
-
-//             <button 
-//               onClick={() => setShowModal(false)} 
-//               className="w-full bg-neutral-800 py-3 rounded-xl font-medium mt-4 hover:bg-neutral-700 transition-colors"
-//             >
-//               Close
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </main>
-//   );
-// }
-
-// app/page.tsx
 'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
 
 export default function LandingPage() {
-  const [showModal, setShowModal] = useState(false);
+  const [activeView, setActiveView] = useState<'year' | 'month' | null>(null);
+
+  const closeModal = () => setActiveView(null);
 
   return (
     <main className="min-h-screen w-full bg-black text-white flex flex-col items-center p-6 font-sans selection:bg-neutral-800">
@@ -138,7 +48,7 @@ export default function LandingPage() {
               
               {/* Install Button (iOS Style) */}
               <button 
-                onClick={() => setShowModal(true)}
+                onClick={() => setActiveView('year')}
                 className="bg-neutral-800/80 backdrop-blur-md border border-neutral-600/50 text-neutral-200 text-sm font-semibold py-2 px-8 rounded-full hover:bg-neutral-700 transition-all active:scale-95"
               >
                 Install
@@ -168,7 +78,7 @@ export default function LandingPage() {
               </p>
               
               <button 
-                onClick={() => setShowModal(true)}
+                onClick={() => setActiveView('month')}
                 className="bg-neutral-800/80 backdrop-blur-md border border-neutral-600/50 text-neutral-200 text-sm font-semibold py-2 px-8 rounded-full hover:bg-neutral-700 transition-all active:scale-95"
               >
                 Install
@@ -190,19 +100,111 @@ export default function LandingPage() {
 
       {/* 1: '#EF4444', 2: '#F97316', 3: '#EAB308', 4: '#84CC16', 5: '#22C55E' */}
 
-      {/* --- Modal Implementation --- */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#1a1a1a] border border-neutral-800 w-full max-w-md rounded-3xl p-6 text-left shadow-2xl animate-in zoom-in-95 duration-200">
-            <h2 className="text-xl font-bold mb-4">Get Started</h2>
-            <p className="text-neutral-400 text-sm mb-6">
-              Add this page to your home screen to enable the widget features.
-            </p>
+      {/* --- Detailed Setup Modal --- */}
+      {activeView && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          
+          {/* Modal Container: Solid bg-neutral-900 to fix transparency weirdness */}
+          <div className="bg-neutral-900 border border-neutral-700 w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 md:p-8 text-left shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-8 duration-300 scrollbar-hide">
+            
+            {/* Sticky Header: Matches bg-neutral-900 exactly */}
+            <div className="flex justify-between items-center mb-6 top-0 bg-neutral-900 z-10 py-2 border-b border-neutral-800">
+              <h2 className="text-2xl font-bold tracking-tight">
+                Setup: <span className="text-neutral-400">{activeView === 'year' ? 'Yearly View' : 'Monthly View'}</span>
+              </h2>
+              <button onClick={closeModal} className="p-2 text-neutral-500 hover:text-white transition-colors">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            <div className="space-y-10 pb-4">
+              
+              {/* Phase 1 */}
+              <div className="space-y-3">
+                <h3 className="text-white font-bold text-lg flex items-center gap-3">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800 text-xs border border-neutral-700">1</span>
+                  Install the App
+                </h3>
+                <ul className="list-disc list-outside pl-10 space-y-2 text-neutral-400 text-sm leading-relaxed">
+                  <li>Open this page in <span className="text-white font-medium">Safari</span> on your iPhone.</li>
+                  <li>Tap the <span className="text-white font-medium">Share Icon</span> (box with arrow) → Select <span className="text-white font-medium">Add to Home Screen</span>.</li>
+                  <li>Close Safari and open the new app icon from your home screen.</li>
+                  <li className="text-neutral-500 italic">You should see the colored mood buttons, not this page.</li>
+                </ul>
+              </div>
+
+              {/* Phase 2 */}
+              <div className="space-y-3">
+                <h3 className="text-white font-bold text-lg flex items-center gap-3">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800 text-xs border border-neutral-700">2</span>
+                  Get Your User ID
+                </h3>
+                <ul className="list-disc list-outside pl-10 space-y-2 text-neutral-400 text-sm leading-relaxed">
+                  <li>Inside the app, tap the faint text in the <span className="text-white font-medium">bottom right corner</span>.</li>
+                  <li>It will say "Copied!".</li>
+                  <li>Paste this somewhere safe (like Notes) for a moment.</li>
+                </ul>
+              </div>
+
+              {/* Phase 3 */}
+              <div className="space-y-3">
+                <h3 className="text-white font-bold text-lg flex items-center gap-3">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800 text-xs border border-neutral-700">3</span>
+                  Create the Shortcut
+                </h3>
+                <div className="pl-10 space-y-4 text-neutral-400 text-sm leading-relaxed">
+                  <p>Open the <span className="text-white font-medium">Shortcuts App</span> and tap <span className="text-white font-medium">+</span> to create new.</p>
+                  
+                  <div className="bg-black border border-neutral-800 rounded-xl p-4 space-y-3">
+                    <div className="grid grid-cols-[20px_1fr] gap-2">
+                      <span className="text-neutral-500">1.</span>
+                      <span>Add action <b>"URL"</b>. Paste this link:<br/>
+                        <code className="block mt-2 bg-neutral-900 p-3 rounded text-xs text-green-400 break-all select-all border border-neutral-800">
+                          {activeView === 'month' 
+                            ? 'https://mood-heatmap.netlify.app/api/wallpaper?view=month&user_id=' 
+                            : 'https://mood-heatmap.netlify.app//api/wallpaper?user_id='
+                          }
+                        </code>
+                        <span className="text-xs text-neutral-500 block mt-1">Add your Copied ID to the very end of this link.</span>
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-[20px_1fr] gap-2">
+                      <span className="text-neutral-500">2.</span>
+                      <span>Add action <b>"Get Contents of URL"</b>.</span>
+                    </div>
+                    <div className="grid grid-cols-[20px_1fr] gap-2">
+                      <span className="text-neutral-500">3.</span>
+                      <span>Add action <b>"Set Wallpaper"</b>.</span>
+                    </div>
+                    <div className="grid grid-cols-[20px_1fr] gap-2">
+                      <span className="text-neutral-500">⚠</span>
+                      <span>Tap the arrow next to Image and turn <b>OFF "Show Preview"</b>.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Phase 4 */}
+              <div className="space-y-3">
+                <h3 className="text-white font-bold text-lg flex items-center gap-3">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-neutral-800 text-xs border border-neutral-700">4</span>
+                  Automate It
+                </h3>
+                <ul className="list-disc list-outside pl-10 space-y-2 text-neutral-400 text-sm leading-relaxed">
+                  <li>Go to <b>Automation</b> tab → New Automation.</li>
+                  <li>Select <b>Time of Day</b> (e.g., Midnight).</li>
+                  <li>Select <b>Run Immediately</b> (Important!).</li>
+                  <li>Action: <b>Run Shortcut</b> → Select your new shortcut.</li>
+                </ul>
+              </div>
+
+            </div>
+
             <button 
-              onClick={() => setShowModal(false)}
-              className="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-neutral-200 transition-colors"
+              onClick={closeModal}
+              className="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-neutral-200 transition-colors"
             >
-              Close
+              I've finished setup
             </button>
           </div>
         </div>
