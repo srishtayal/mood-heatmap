@@ -81,10 +81,10 @@ export default function LandingPage() {
       
       {/* --- Main Content --- */}
       <div className="max-w-md space-y-8 animate-in fade-in duration-700">
-        <h1 className="text-5xl font-bold tracking-tighter">Life in Days</h1>
+        <h1 className="text-6xl font-bold tracking-tighter">See your year, at a glance.</h1>
         <p className="text-xl text-neutral-400">
-          Turn your daily mood into a living wallpaper. <br />
-          Visualize your year, one day at a time.
+          Log one mood a day. <br />
+          Turn your daily mood into a living wallpaper. 
         </p>
 
         <div className="flex flex-col gap-4 pt-4">
@@ -95,9 +95,6 @@ export default function LandingPage() {
             Install / Get Started
           </button>
           
-          <Link href="/log" className="text-neutral-500 hover:text-white text-sm mt-4 underline underline-offset-4">
-            Just log a mood (Web)
-          </Link>
         </div>
       </div>
 
