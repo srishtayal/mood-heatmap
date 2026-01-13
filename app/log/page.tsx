@@ -86,14 +86,6 @@ const logMood = async (score: number) => {
           {mood.label}
         </button>
       ))}
-
-      {/* Hidden User ID Copy - Bottom Right */}
-      {/* <button 
-        onClick={copyUserId}
-        className="absolute bottom-4 right-4 text-xs text-black/20 hover:text-black/50 font-mono z-10"
-      >
-        {copied ? 'Copied!' : userId ? `ID: ${userId.slice(0, 4)}...` : ''}
-      </button> */}
     </main>
   );
 }
